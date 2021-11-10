@@ -66,6 +66,10 @@ test('blogs are returned the correct amount of blog posts in the JSON format', a
   expect(response.type).toBe('application/json');
   expect(response.body.length).toEqual(initialBlogs.length);
 });
+test('blogs have id property', async () => {
+  const response = await api.get('/api/blogs');
+  expect(response.body.map((res) => res._id)).toBeDefined();
+});
 
 afterAll(() => {
   mongoose.connection.close();
