@@ -83,6 +83,18 @@ test('create new blog successfully', async () => {
   expect(updatedBlogs.body.length).toBe(initialBlogs.length + 1);
   expect(updatedBlogs.body[6]).toEqual(response.body);
 });
+test('default value of likes is 0', async () => {
+  const newBlog = {
+    title: 'Test2',
+    author: 'Test2',
+    url: 'Test2',
+  };
+  const response = await api.post('/api/blogs').send(newBlog);
+  expect(response.statusCode).toBe(201);
+  const updatedBlogs = await api.get('/api/blogs');
+  expect(updatedBlogs.body[6]).toEqual(response.body);
+  expect(updatedBlogs.body[6].likes).toEqual(0);
+});
 
 afterAll(() => {
   mongoose.connection.close();
