@@ -70,6 +70,19 @@ test('blogs have id property', async () => {
   const response = await api.get('/api/blogs');
   expect(response.body.map((res) => res._id)).toBeDefined();
 });
+test('create new blog successfully', async () => {
+  const newBlog = {
+    title: 'Test',
+    author: 'Test',
+    url: 'Test',
+    likes: 2,
+  };
+  const response = await api.post('/api/blogs').send(newBlog);
+  expect(response.statusCode).toBe(201);
+  const updatedBlogs = await api.get('/api/blogs');
+  expect(updatedBlogs.body.length).toBe(initialBlogs.length + 1);
+  expect(updatedBlogs.body[6]).toEqual(response.body);
+});
 
 afterAll(() => {
   mongoose.connection.close();
