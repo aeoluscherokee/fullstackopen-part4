@@ -200,12 +200,12 @@ describe('most blogs', () => {
         __v: 0,
       },
     ];
-    const favorite = {
+    const expectedAuthor = {
       author: 'Robert C. Martin',
       blogs: 3,
     };
     const result = listHelper.mostBlog(blogs);
-    expect(result).toEqual(favorite);
+    expect(result).toEqual(expectedAuthor);
   });
 });
 
@@ -261,10 +261,11 @@ describe('most likes', () => {
         __v: 0,
       },
     ];
-    const result = listHelper.mostLikes(blogs);
-    expect(result).toEqual({
+    const expectedAuthor = {
       author: 'Edsger W. Dijkstra',
       likes: 17,
-    });
+    };
+    const result = listHelper.mostLikes(blogs);
+    expect(result).toEqual(expectedAuthor);
   });
 });
