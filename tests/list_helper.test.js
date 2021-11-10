@@ -144,7 +144,6 @@ describe('favorite blog', () => {
       likes: 12,
     };
     const result = listHelper.favoriteBlog(blogs);
-    console.log(result);
     expect(result).toEqual(favorite);
   });
 });
@@ -206,7 +205,6 @@ describe('most blogs', () => {
       blogs: 3,
     };
     const result = listHelper.mostBlog(blogs);
-    console.log(result);
     expect(result).toEqual(favorite);
   });
 });
@@ -264,7 +262,6 @@ describe('most likess', () => {
       },
     ];
     const result = listHelper.mostLikes(blogs);
-    console.log(result);
     expect(result).toEqual({
       author: 'Edsger W. Dijkstra',
       likes: 17,
