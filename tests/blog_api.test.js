@@ -95,6 +95,26 @@ test('default value of likes is 0', async () => {
   expect(updatedBlogs.body[6]).toEqual(response.body);
   expect(updatedBlogs.body[6].likes).toEqual(0);
 });
+test('return code 400 when title and url are missing', async () => {
+  const noUrl = {
+    title: 'Test3',
+    author: 'Test3',
+  };
+  const response = await api.post('/api/blogs').send(noUrl);
+  expect(response.statusCode).toBe(400);
+  const noTitle = {
+    url: 'Test3',
+    author: 'Test3',
+  };
+  const response2 = await api.post('/api/blogs').send(noTitle);
+  expect(response2.statusCode).toBe(400);
+  const noBoth = {
+    url: 'Test3',
+    author: 'Test3',
+  };
+  const response3 = await api.post('/api/blogs').send(noBoth);
+  expect(response3.statusCode).toBe(400);
+});
 
 afterAll(() => {
   mongoose.connection.close();
