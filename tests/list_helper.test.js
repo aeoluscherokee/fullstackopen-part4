@@ -87,7 +87,7 @@ describe('total likes', () => {
 });
 
 describe('favorite blog', () => {
-  test('return favorite blog object', () => {
+  test('return object of favorite blog', () => {
     const blogs = [
       {
         _id: '5a422a851b54a676234d17f7',
@@ -149,7 +149,7 @@ describe('favorite blog', () => {
 });
 
 describe('most blogs', () => {
-  test('return most blogs object', () => {
+  test('return object of most blogs author', () => {
     const blogs = [
       {
         _id: '5a422a851b54a676234d17f7',
@@ -209,7 +209,7 @@ describe('most blogs', () => {
   });
 });
 
-describe('most likess', () => {
+describe('most likes', () => {
   test('return object of most likes author ', () => {
     const blogs = [
       {
