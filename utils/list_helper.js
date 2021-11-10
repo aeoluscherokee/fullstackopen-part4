@@ -48,9 +48,30 @@ const mostBlog = (blogs) => {
   return mostCounter;
 };
 
+const mostLikes = (blogs) => {
+  const counter = new Array();
+  blogs.forEach((blog) => {
+    const isExist = counter.some(({ author }) => author === blog.author);
+    if (isExist) {
+      counter.map((el) => {
+        if (el.author === blog.author) {
+          el.likes = el.likes + blog.likes;
+        } else return;
+      });
+    } else {
+      counter.push({ author: blog.author, likes: blog.likes });
+    }
+  });
+  const sortedCounter = counter.sort((a, b) => b.likes - a.likes);
+  const mostCounter = sortedCounter[0];
+  console.log(mostCounter);
+  return mostCounter;
+};
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlog,
+  mostLikes,
 };
