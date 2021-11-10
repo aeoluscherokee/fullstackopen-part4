@@ -44,7 +44,6 @@ const mostBlog = (blogs) => {
   });
   const sortedCounter = counter.sort((a, b) => b.blogs - a.blogs);
   const mostCounter = sortedCounter[0];
-  console.log(mostCounter);
   return mostCounter;
 };
 
@@ -64,7 +63,6 @@ const mostLikes = (blogs) => {
   });
   const sortedCounter = counter.sort((a, b) => b.likes - a.likes);
   const mostCounter = sortedCounter[0];
-  console.log(mostCounter);
   return mostCounter;
 };
 
