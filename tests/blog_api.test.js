@@ -139,6 +139,28 @@ test('return error when catch error', async () => {
   const response = await api.delete('/api/blogs/5a422bc61b54a676234d555');
   expect(response.body.error).toBeDefined();
 });
+test('return code 200 when update successfully', async () => {
+  const updateLikes = {
+    title: 'Type wars',
+    author: 'Robert C. Martin',
+    url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+    likes: 3,
+  };
+  const response = await api
+    .put('/api/blogs/likes/5a422bc61b54a676234d17fc')
+    .send(updateLikes);
+
+  expect(response.statusCode).toBe(200);
+  expect(response.body.likes).toBe(3);
+});
+test('return code 404 when update object is not existed', async () => {
+  const response = await api.put('/api/blogs/likes/5a422bc61b54a676234d5555');
+  expect(response.statusCode).toBe(404);
+});
+test('return error when catch error', async () => {
+  const response = await api.put('/api/blogs/likes/5a422bc61b54a676234d555');
+  expect(response.body.error).toBeDefined();
+});
 
 afterAll(() => {
   mongoose.connection.close();
