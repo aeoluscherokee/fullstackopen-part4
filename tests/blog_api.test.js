@@ -127,6 +127,18 @@ test('return code 400 when title and url are missing', async () => {
   const response3 = await api.post('/api/blogs').send(noBoth);
   expect(response3.statusCode).toBe(400);
 });
+test('return code 204 when delete successfully', async () => {
+  const response = await api.delete('/api/blogs/5a422bc61b54a676234d17fc');
+  expect(response.statusCode).toBe(204);
+});
+test('return code 404 when delete object is not existed', async () => {
+  const response = await api.delete('/api/blogs/5a422bc61b54a676234d5555');
+  expect(response.statusCode).toBe(404);
+});
+test('return error when catch error', async () => {
+  const response = await api.delete('/api/blogs/5a422bc61b54a676234d555');
+  expect(response.body.error).toBeDefined();
+});
 
 afterAll(() => {
   mongoose.connection.close();
