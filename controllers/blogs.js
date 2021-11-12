@@ -4,7 +4,7 @@ const User = require('../models/user');
 const { userExtractor } = require('../utils/middleware');
 
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({}).populate('user');
+  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 });
   response.json(blogs);
 });
 
@@ -12,10 +12,10 @@ blogsRouter.post('/', userExtractor, async (request, response, next) => {
   const body = request.body;
 
   try {
-    if (!request.token || !request.userId) {
+    const user = await User.findById(request.userId);
+    if (!request.token || !request.userId || !user) {
       return response.status(401).json({ error: 'token missing or invalid' });
     }
-    const user = await User.findById(request.userId);
     const blog = new Blog({
       title: body.title,
       author: body.author,
@@ -39,14 +39,16 @@ blogsRouter.delete('/:id', userExtractor, async (request, response, next) => {
       return response.status(401).json({ error: 'token missing or invalid' });
     }
     const blog = await Blog.findById(id);
-    if (request.userId !== blog.user.toString()) {
-      return response
-        .status(403)
-        .json({ error: 'only creator is allowed to delete a blog' });
-    }
-    const deletedBlog = await Blog.findByIdAndRemove(id);
-    if (deletedBlog) {
-      response.status(204).end();
+
+    if (blog) {
+      if (request.userId === blog.user.toString()) {
+        await Blog.findByIdAndRemove(id);
+        response.status(204).end();
+      } else {
+        return response
+          .status(403)
+          .json({ error: 'only creator is allowed to delete a blog' });
+      }
     } else {
       response.status(404).end();
     }
