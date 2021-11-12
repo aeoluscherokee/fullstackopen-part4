@@ -37,6 +37,16 @@ blogsRouter.post('/', async (request, response, next) => {
 blogsRouter.delete('/:id', async (request, response, next) => {
   const id = request.params.id;
   try {
+    const decodedToken = jwt.verify(request.token, config.TOKEN_SECRET);
+    if (!request.token || !decodedToken.id) {
+      return response.status(401).json({ error: 'token missing or invalid' });
+    }
+    const blog = await Blog.findById(id);
+    if (decodedToken.id !== blog.user.toString()) {
+      return response
+        .status(403)
+        .json({ error: 'only creator is allowed to delete a blog' });
+    }
     const deletedBlog = await Blog.findByIdAndRemove(id);
     if (deletedBlog) {
       response.status(204).end();
