@@ -26,7 +26,15 @@ blogsRouter.post('/', userExtractor, async (request, response, next) => {
     const newBlog = await blog.save();
     user.blogs = user.blogs.concat(newBlog._id);
     await user.save({ validateModifiedOnly: true });
-    response.status(201).json(newBlog);
+    const resData = {
+      id: newBlog.id,
+      title: newBlog.title,
+      author: newBlog.author,
+      url: newBlog.url,
+      likes: newBlog.likes,
+      user,
+    };
+    response.status(201).json(resData);
   } catch (error) {
     next(error);
   }
