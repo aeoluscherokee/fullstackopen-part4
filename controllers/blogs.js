@@ -50,7 +50,7 @@ blogsRouter.delete('/:id', userExtractor, async (request, response, next) => {
           .json({ error: 'only creator is allowed to delete a blog' });
       }
     } else {
-      response.status(404).end();
+      response.status(404).json({ error: 'this blog is not existed' });
     }
   } catch (error) {
     next(error);
