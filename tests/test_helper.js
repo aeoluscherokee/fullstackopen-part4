@@ -195,7 +195,6 @@ const createInitialUsers = async () => {
   });
   await newUser2.save();
 };
-mongoose.Types.ObjectId;
 const createInitialBlogs = async () => {
   await Blog.deleteMany({});
   let blogObject1 = new Blog({
@@ -220,12 +219,12 @@ const createInitialBlogs = async () => {
   await blogObject4.save();
   let blogObject5 = new Blog({
     ...initialBlogs[4],
-    user: mongoose.Types.ObjectId('618d36aae77920fef23dfa41'),
+    user: mongoose.Types.ObjectId('618d36aae77920fef23dfa45'),
   });
   await blogObject5.save();
   let blogObject6 = new Blog({
     ...initialBlogs[5],
-    user: mongoose.Types.ObjectId('618d36aae77920fef23dfa41'),
+    user: mongoose.Types.ObjectId('618d36aae77920fef23dfa45'),
   });
   await blogObject6.save();
 };

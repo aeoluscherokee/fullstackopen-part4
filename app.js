@@ -4,6 +4,7 @@ const cors = require('cors');
 const config = require('./utils/config');
 const blogsRouter = require('./controllers/blogs');
 const usersRouter = require('./controllers/users');
+const testRouter = require('./controllers/testing');
 const middleware = require('./utils/middleware');
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(middleware.tokenExtractor);
 app.use('/api/blogs', middleware.userExtractor, blogsRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/testing', testRouter);
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
 
