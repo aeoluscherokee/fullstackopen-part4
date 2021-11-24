@@ -1,11 +1,20 @@
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
 const User = require('../models/user');
+const Comment = require('../models/comment');
 const { userExtractor } = require('../utils/middleware');
 
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 });
+  const blogs = await Blog.find({}).populate('user', {
+    username: 1,
+    name: 1,
+  });
   response.json(blogs);
+});
+
+blogsRouter.get('/comments', async (request, response) => {
+  const comments = await Comment.find({}).populate('blog');
+  response.json(comments);
 });
 
 blogsRouter.post('/', userExtractor, async (request, response, next) => {
@@ -39,6 +48,40 @@ blogsRouter.post('/', userExtractor, async (request, response, next) => {
     next(error);
   }
 });
+
+blogsRouter.post(
+  '/:id/comments',
+  userExtractor,
+  async (request, response, next) => {
+    const body = request.body;
+    console.log(body);
+    try {
+      const user = await User.findById(request.userId);
+      if (!request.token || !request.userId || !user) {
+        return response.status(401).json({ error: 'token missing or invalid' });
+      }
+      const blog = await Blog.findById(request.params.id);
+      const comment = new Comment({
+        comment: body.comment,
+        blog: blog._id,
+        user: user._id,
+      });
+      const newComment = await comment.save();
+      user.comments = user.comments.concat(newComment._id);
+      blog.comments = blog.comments.concat(newComment._id);
+      await user.save({ validateModifiedOnly: true });
+      await blog.save({ validateModifiedOnly: true });
+      const resData = {
+        id: newComment.id,
+        comment: newComment.comment,
+        blog: { id: blog._id },
+      };
+      response.status(201).json(resData);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 blogsRouter.delete('/:id', userExtractor, async (request, response, next) => {
   const id = request.params.id;
